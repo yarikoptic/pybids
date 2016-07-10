@@ -67,4 +67,4 @@ MICRO = _version_micro
 VERSION = __version__
 # No data for now
 # PACKAGE_DATA = {'bids': [pjoin('data', '*')]}
-REQUIRES = []
+REQUIRES = ['numpy']

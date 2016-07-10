@@ -21,6 +21,7 @@ import traceback
 import re
 from os.path import basename, dirname
 
+
 def mbasename(s):
     """Custom function to include directory name if filename is too common
 
@@ -32,6 +33,7 @@ def mbasename(s):
     if base in set(['base', '__init__']):
         base = basename(dirname(s)) + '.' + base
     return base
+
 
 class TraceBack(object):
     """Customized traceback to be included in debug messages
@@ -102,8 +104,8 @@ class ColorFormatter(logging.Formatter):
             use_color = is_interactive()
         self.use_color = use_color and platform.system() != 'Windows'  # don't use color on windows
         msg = self.formatter_msg(self._get_format(log_name), self.use_color)
-        self._tb = TraceBack(collide=os.environ.get('DUECREDIT_LOGTRACEBACK', '') == 'collide') \
-            if os.environ.get('DUECREDIT_LOGTRACEBACK', False) else None
+        self._tb = TraceBack(collide=os.environ.get(' BIDS_LOGTRACEBACK', '') == 'collide') \
+            if os.environ.get('BIDS_LOGTRACEBACK', False) else None
         logging.Formatter.__init__(self, msg)
 
     def _get_format(self, log_name=False):
@@ -141,7 +143,7 @@ class ColorFormatter(logging.Formatter):
 class LoggerHelper(object):
     """Helper to establish and control a Logger"""
 
-    def __init__(self, name='duecredit'):
+    def __init__(self, name='bids'):
         self.name = name
         self.lgr = logging.getLogger(name)
 
@@ -168,7 +170,6 @@ class LoggerHelper(object):
             log_level = getattr(logging, level.upper())
 
         self.lgr.setLevel(log_level)
-
 
     def get_initialized_logger(self, logtarget=None):
         """Initialize and return the logger

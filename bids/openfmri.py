@@ -2,21 +2,26 @@
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
 #
-#   See COPYING file distributed along with the PyMVPA package for the
+#   See LICENSE file distributed along with the BIDS package for the
 #   copyright and license terms.
 #
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
-"""Helpers to build PyMVPA dataset instances from openfmri.org dataset
+"""Helpers to deal with OpenfMRI (superseded by BIDS) datasets
 """
 
 __docformat__ = 'restructuredtext'
 
-__all__ = [ 'OpenFMRIDataset']
+__all__ = ['OpenFMRIDataset']
+
 
 import os
-from os.path import join as _opj
 import numpy as np
-from mvpa2.datasets import vstack
+
+from os.path import join as _opj
+from six import iteritems
+
+from .log import lgr
+
 from mvpa2.base import warning
 
 
@@ -311,7 +316,7 @@ class OpenFMRIDataset(object):
         data = [None] * nruns
 
         # over all possible run ids
-        for run in xrange(nruns):
+        for run in range(nruns):
             # for all actual subjects
             for subj in sorted(tbri.keys()):
                 if subj in exclude_subjs:
@@ -421,7 +426,7 @@ class OpenFMRIDataset(object):
             if len(attrs.shape) == 1:
                 ds.sa[sa] = attrs
             else:
-                for col in xrange(attrs.shape[1]):
+                for col in range(attrs.shape[1]):
                     ds.sa['%s_%i' % (sa, col)] = attrs[:, col]
         return ds
 
@@ -650,7 +655,7 @@ class OpenFMRIDataset(object):
                     if preproc_ds is not None:
                         d = preproc_ds(d)
                     d = modelfx(
-                        d, events, **dict([(k, v) for k, v in kwargs.iteritems()
+                        d, events, **dict([(k, v) for k, v in iteritems(kwargs)
                                           if not k in ('preproc_img', 'preproc_ds',
                                                        'modelfx', 'stack', 'flavor',
                                                        'mask', 'add_fa', 'add_sa')]))

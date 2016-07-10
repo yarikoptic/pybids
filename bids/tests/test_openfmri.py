@@ -2,7 +2,7 @@
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
 #
-#   See COPYING file distributed along with the PyMVPA package for the
+#   See LICENSE file distributed along with the PyMVPA package for the
 #   copyright and license terms.
 #
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
@@ -13,27 +13,26 @@ from os.path import join as pathjoin
 
 from nose.tools import assert_greater
 
-from mvpa2.testing import *
-from mvpa2.testing.sweep import sweepargs
+from .. import openfmri as ofm
 
-from mvpa2 import pymvpa_dataroot
-import mvpa2.datasets.sources.openfmri as ofm
-from mvpa2.datasets.sources.native import load_tutorial_data, \
-    load_example_fmri_dataset
-from mvpa2.misc.io.base import SampleAttributes
 from mvpa2.datasets.eventrelated import events2sample_attr, assign_conditionlabels
 
+import pytest
 
-@sweepargs(
-    fname=('something',
-           'something.nii',
-           'something.nii.gz',
-           'something.hdr',
-           'something.hdr.gz',
-           'something.img',
-           'something.img.gz'))
+fnames=(
+    'something',
+    'something.nii',
+    'something.nii.gz',
+    'something.hdr',
+    'something.hdr.gz',
+    'something.img',
+    'something.img.gz'
+)
+
+
+@pytest.mark.parametrize('fname', fnames)
 def test_helpers(fname):
-    assert_equal('something', ofm._stripext(fname))
+    assert ofm._stripext(fname) == 'something'
 
 
 def test_openfmri_dataset():
